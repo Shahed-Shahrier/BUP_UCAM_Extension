@@ -1,7 +1,7 @@
 (() => {
     "use strict";
 
-    const app = window.BupUcam;
+    const app = window.BupUcamExtension;
     if (!app || !app.features) return;
 
     [

@@ -1,6 +1,6 @@
-# BUP UCAM
+# BUP UCAM Extension
 
-BUP UCAM First Gen is a lightweight browser extension for the BUP UCAM portal. It adds quick controls for evaluation forms and helps students estimate in-course totals and final exam marks needed for each grade.
+BUP UCAM Extension First Gen is a lightweight browser extension for the UCAM portal. It adds quick controls for evaluation forms and helps students estimate in-course totals and final exam marks needed for each grade.
 
 ## Features
 
@@ -22,11 +22,11 @@ BUP UCAM First Gen is a lightweight browser extension for the BUP UCAM portal. I
 ## Project Structure
 
 - `manifest.json`: Chrome extension manifest.
-- `content.js`: Starts the registered BUP UCAM features.
+- `content.js`: Starts the registered BUP UCAM Extension features.
 - `scripts/core.js`: Shared configuration, state, and utilities.
 - `scripts/evaluation-quick-select.js`: Evaluation form quick-select feature.
 - `scripts/exam-planner.js`: Exam mark parsing, in-course total, and final requirement planning.
-- `styles.css`: Styles for injected BUP UCAM UI.
+- `styles.css`: Styles for injected BUP UCAM Extension UI.
 
 ## Notes
 

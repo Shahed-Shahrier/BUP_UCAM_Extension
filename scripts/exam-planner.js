@@ -1,7 +1,7 @@
 (() => {
     "use strict";
 
-    const app = window.BupUcam;
+    const app = window.BupUcamExtension;
     if (!app) return;
 
     const { ids, classes, selectors, gradeScale } = app.config;
@@ -160,7 +160,7 @@
                         max="${row.max}"
                         step="0.01"
                         inputmode="decimal"
-                        data-bup-ucam-manual-key="${key}"
+                        data-bup-ucam-extension-manual-key="${key}"
                         value="${manualMarkFor(row)}"
                         placeholder="Enter mark"
                         aria-label="Enter ${escapeHTML(row.name)} mark"
@@ -193,19 +193,19 @@
         return `
             <tr class="${classes.generatedRow}">
                 <td align="center" valign="middle"><span class="${classes.rowIcon}">&#931;</span></td>
-                <td align="center" valign="middle"><span class="bup-ucam-component-name">Class Test Average <small>(${classTestNote})</small></span></td>
+                <td align="center" valign="middle"><span class="bup-ucam-extension-component-name">Class Test Average <small>(${classTestNote})</small></span></td>
                 <td align="center" valign="middle">${limitBadgeHTML(inCourse.classTestMax)}</td>
                 <td align="center" valign="middle">${markBadgeHTML(inCourse.classTestScore)}</td>
             </tr>
             <tr class="${classes.generatedRow}">
                 <td align="center" valign="middle"><span class="${classes.rowIcon}">&#931;</span></td>
-                <td align="center" valign="middle"><span class="bup-ucam-component-name">Mid Term <small>(scaled to /20)</small></span></td>
+                <td align="center" valign="middle"><span class="bup-ucam-extension-component-name">Mid Term <small>(scaled to /20)</small></span></td>
                 <td align="center" valign="middle">${limitBadgeHTML(inCourse.midTermMax)}</td>
                 <td align="center" valign="middle">${markBadgeHTML(inCourse.midTermScore)}</td>
             </tr>
             <tr class="${classes.totalRow}">
                 <td align="center" valign="middle"><span class="${classes.rowIcon} ${classes.rowIconTotal}">&#8721;</span></td>
-                <td align="center" valign="middle"><span class="bup-ucam-total-label">TOTAL IN-COURSE MARKS${provisionalLabel}</span></td>
+                <td align="center" valign="middle"><span class="bup-ucam-extension-total-label">TOTAL IN-COURSE MARKS${provisionalLabel}</span></td>
                 <td align="center" valign="middle">${totalBadgeHTML(inCourse.totalMax, true)}</td>
                 <td align="center" valign="middle">${totalBadgeHTML(inCourse.total)}</td>
             </tr>`;
@@ -244,7 +244,7 @@
         }).join("");
 
         return `
-            <section id="${ids.finalSection}" aria-label="BUP UCAM final exam planning">
+            <section id="${ids.finalSection}" aria-label="BUP UCAM Extension final exam planning">
                 <div class="${classes.finalHeader}">
                     <span class="${classes.finalHeaderIcon}" aria-hidden="true">+</span>
                     <span>Final Exam Marks Needed for Each Grade</span>
@@ -272,7 +272,7 @@
                 </div>
                 <div class="${classes.footnote}">
                     Final Exam is out of 100 and is scaled x0.5 into the overall result (Overall = In-Course /50 + Final x0.5).
-                    BUP UCAM First Gen estimate - please double-check against your course teacher's official scheme.
+                    BUP UCAM Extension First Gen estimate - please double-check against your course teacher's official scheme.
                 </div>
             </section>`;
     }
@@ -304,7 +304,7 @@
     function bindManualInputs(table) {
         table.querySelectorAll(selectors.manualMarkInput).forEach(input => {
             input.addEventListener("input", () => {
-                const key = input.dataset.bupUcamManualKey;
+                const key = input.dataset.bupUcamExtensionManualKey;
                 const mark = parseMark(input.value);
 
                 if (mark === null) manualMarksByRow.delete(key);
@@ -312,7 +312,7 @@
 
                 render(true);
 
-                const restoredInput = document.querySelector(`[data-bup-ucam-manual-key="${key}"]`);
+                const restoredInput = document.querySelector(`[data-bup-ucam-extension-manual-key="${key}"]`);
                 if (restoredInput) restoredInput.focus();
             });
         });

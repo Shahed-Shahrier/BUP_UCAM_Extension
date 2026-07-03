@@ -1,7 +1,7 @@
 (() => {
     "use strict";
 
-    const app = window.BupUcam;
+    const app = window.BupUcamExtension;
     if (!app) return;
 
     const { ids, classes, ratings, selectors } = app.config;
@@ -43,7 +43,7 @@
 
         const panel = document.createElement("div");
         panel.id = ids.evaluationPanel;
-        panel.setAttribute("aria-label", "BUP UCAM evaluation quick select");
+        panel.setAttribute("aria-label", "BUP UCAM Extension evaluation quick select");
 
         ratings.forEach(rating => panel.appendChild(buildRatingButton(rating)));
         document.body.appendChild(panel);

@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "BUP UCAM",
+  "name": "BUP UCAM Extension",
   "version": "1.0.0",
-  "version_name": "BUP UCAM First Gen",
-  "description": "BUP UCAM First Gen adds evaluation quick-select, in-course mark totals, and final exam mark planning for the UCAM portal.",
+  "version_name": "BUP UCAM Extension First Gen",
+  "description": "BUP UCAM Extension First Gen adds evaluation quick-select, in-course mark totals, and final exam mark planning for the UCAM portal.",
   "content_scripts": [
     {
       "matches": [
