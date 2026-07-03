@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "BUP UCAM",
+  "version": "1.0.0",
+  "version_name": "BUP UCAM First Gen",
+  "description": "BUP UCAM First Gen adds evaluation quick-select, in-course mark totals, and final exam mark planning for the UCAM portal.",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.bup.edu.bd/*"
+      ],
+      "js": [
+        "scripts/core.js",
+        "scripts/evaluation-quick-select.js",
+        "scripts/exam-planner.js",
+        "content.js"
+      ],
+      "css": ["styles.css"]
+    }
+  ]
+}
