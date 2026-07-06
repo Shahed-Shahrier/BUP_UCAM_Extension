@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "BUP UCAM Extension",
-  "version": "1.0.0",
-  "version_name": "BUP UCAM Extension First Gen",
-  "description": "BUP UCAM Extension First Gen adds evaluation quick-select, in-course mark totals, and final exam mark planning for the UCAM portal.",
+  "version": "1.1.0",
+  "version_name": "BUP UCAM Extension 1.1",
+  "description": "BUP UCAM Extension adds evaluation quick-select, in-course planning, final exam estimates, and attendance present percentage alerts for the UCAM portal.",
   "content_scripts": [
     {
       "matches": [
@@ -13,6 +13,7 @@
         "scripts/core.js",
         "scripts/evaluation-quick-select.js",
         "scripts/exam-planner.js",
+        "scripts/attendance-percentage.js",
         "content.js"
       ],
       "css": ["styles.css"]

@@ -319,3 +319,31 @@ tr.bup-ucam-extension-current-floor td {
     font-style: italic;
     line-height: 1.5;
 }
+
+.bup-ucam-extension-attendance-percent {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 58px;
+    min-height: 26px;
+    margin-right: 8px;
+    padding: 4px 9px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.bup-ucam-extension-attendance-percent-safe {
+    border: 1px solid rgba(21, 132, 99, 0.22);
+    color: #0f7658;
+    background: rgba(21, 132, 99, 0.12);
+}
+
+.bup-ucam-extension-attendance-percent-risk {
+    border: 1px solid rgba(179, 51, 43, 0.22);
+    color: #b3332b;
+    background: rgba(179, 51, 43, 0.12);
+}

@@ -1,6 +1,6 @@
 # BUP UCAM Extension
 
-BUP UCAM Extension First Gen is a lightweight browser extension for the UCAM portal. It adds quick controls for evaluation forms and helps students estimate in-course totals and final exam marks needed for each grade.
+BUP UCAM Extension is a lightweight browser extension for the UCAM portal. It adds quick controls for evaluation forms, helps students estimate in-course totals and final exam marks needed for each grade, and flags attendance present percentages.
 
 ## Features
 
@@ -9,6 +9,7 @@ BUP UCAM Extension First Gen is a lightweight browser extension for the UCAM por
 - Estimate in-course totals from class tests, mid term, project or assignment work, and attendance.
 - Add temporary manual marks for pending components.
 - Show final exam marks needed for each grade.
+- Show each course's present percentage beside the present count, highlighted red below 85% and green otherwise.
 
 ## Install Locally
 
@@ -26,6 +27,7 @@ BUP UCAM Extension First Gen is a lightweight browser extension for the UCAM por
 - `scripts/core.js`: Shared configuration, state, and utilities.
 - `scripts/evaluation-quick-select.js`: Evaluation form quick-select feature.
 - `scripts/exam-planner.js`: Exam mark parsing, in-course total, and final requirement planning.
+- `scripts/attendance-percentage.js`: Attendance summary present percentage badges.
 - `styles.css`: Styles for injected BUP UCAM Extension UI.
 
 ## Notes

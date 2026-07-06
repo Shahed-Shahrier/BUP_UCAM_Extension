@@ -7,6 +7,7 @@
     [
         app.features.evaluationQuickSelect,
         app.features.examPlanner,
+        app.features.attendancePercentage,
     ].forEach(feature => {
         if (feature && typeof feature.init === "function") feature.init();
     });

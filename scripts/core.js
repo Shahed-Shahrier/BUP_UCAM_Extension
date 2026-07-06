@@ -7,6 +7,8 @@
             updatePanel: "ctl00_MainContainer_UpdatePanel2",
             marksTable: "ctl00_MainContainer_gvgvExamMarkSummaryDetails",
             finalSection: "bup-ucam-extension-final-section",
+            attendanceUpdatePanel: "ctl00_MainContainer_UpdatePanel03",
+            attendanceSummaryTable: "ctl00_MainContainer_gvClassAttendanceSummary",
         },
         classes: {
             generatedRow: "bup-ucam-extension-row",
@@ -34,12 +36,17 @@
             statusAchieved: "bup-ucam-extension-status-achieved",
             statusImpossible: "bup-ucam-extension-status-impossible",
             footnote: "bup-ucam-extension-footnote",
+            attendancePercentBadge: "bup-ucam-extension-attendance-percent",
+            attendancePercentSafe: "bup-ucam-extension-attendance-percent-safe",
+            attendancePercentRisk: "bup-ucam-extension-attendance-percent-risk",
         },
         selectors: {
             radio: "input[type='radio']",
             manualMarkInput: "[data-bup-ucam-extension-manual-key]",
             hostDataSection: ".data-section",
             hostTableWrapper: ".table-wrapper",
+            presentCount: ".present-count",
+            absentCount: ".absent-count",
         },
         ratings: ["Excellent", "Very good", "Good", "Average", "Poor"],
         gradeScale: [

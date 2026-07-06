@@ -272,7 +272,7 @@
                 </div>
                 <div class="${classes.footnote}">
                     Final Exam is out of 100 and is scaled x0.5 into the overall result (Overall = In-Course /50 + Final x0.5).
-                    BUP UCAM Extension First Gen estimate - please double-check against your course teacher's official scheme.
+                    BUP UCAM Extension estimate - please double-check against your course teacher's official scheme.
                 </div>
             </section>`;
     }
