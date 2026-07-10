@@ -237,16 +237,8 @@
 
     function labInCourseRowsHTML(inCourse) {
         const provisionalLabel = inCourse.isProvisional ? " <small>(provisional)</small>" : "";
-        const componentRows = inCourse.components.map(component => `
-            <tr class="${classes.generatedRow}">
-                <td align="center" valign="middle"><span class="${classes.rowIcon}">&#931;</span></td>
-                <td align="center" valign="middle"><span class="bup-ucam-extension-component-name">${escapeHTML(component.label)}</span></td>
-                <td align="center" valign="middle">${limitBadgeHTML(component.max)}</td>
-                <td align="center" valign="middle">${markBadgeHTML(component.score)}</td>
-            </tr>`).join("");
 
         return `
-            ${componentRows}
             <tr class="${classes.totalRow}">
                 <td align="center" valign="middle"><span class="${classes.rowIcon} ${classes.rowIconTotal}">&#8721;</span></td>
                 <td align="center" valign="middle"><span class="bup-ucam-extension-total-label">TOTAL LAB IN-COURSE MARKS${provisionalLabel}</span></td>
