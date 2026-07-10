@@ -77,12 +77,55 @@
         return null;
     }
 
+    function findLabComponent(rows, pattern) {
+        return rows.find(row => pattern.test(row.name));
+    }
+
+    function labComponentScore(component, missing) {
+        const row = component.row;
+        if (!row) {
+            missing.push(component.label);
+            return Object.assign({}, component, { score: null, max: 0 });
+        }
+
+        return Object.assign({}, component, {
+            score: directComponentScore(row, component.label, missing),
+            max: row.max || 0,
+        });
+    }
+
+    function calculateLabInCourse(rows) {
+        const missing = [];
+        const components = [
+            { label: "Quiz", row: findLabComponent(rows, /\b(quiz|quizzes)\b/i) },
+            { label: "Viva", row: findLabComponent(rows, /\bviva\b/i) },
+            { label: "Attendance", row: findLabComponent(rows, /attendance/i) },
+            { label: "Home Assignment / Report", row: findLabComponent(rows, /(home\s*assignment|assignment\s*\/\s*report|report)/i) },
+            { label: "Class Performance / Observation", row: findLabComponent(rows, /(class\s*performance|observation)/i) },
+        ].map(component => labComponentScore(component, missing));
+        const totalMax = components.reduce((sum, component) => sum + component.max, 0);
+        const total = components.reduce((sum, component) => sum + (component.score || 0), 0);
+
+        return {
+            type: "lab",
+            components,
+            total,
+            totalMax,
+            finalMax: Math.max(100 - totalMax, 0),
+            finalMultiplier: 1,
+            isProvisional: missing.length > 0,
+            missing,
+        };
+    }
+
     function calculateInCourse(rows) {
         const classTests = rows.filter(row => /class\s*test/i.test(row.name));
         const midTerm = rows.find(row => /mid[\s-]*term/i.test(row.name));
         const project = rows.find(row => /(project|assignment|term\s*paper|presentation)/i.test(row.name));
         const attendance = rows.find(row => /attendance/i.test(row.name));
         const missing = [];
+
+        if (!midTerm) return calculateLabInCourse(rows);
 
         const validClassTests = classTests
             .map(row => Object.assign({}, row, { obtained: obtainedMarkFor(row) }))
@@ -128,16 +171,24 @@
             attendanceMax,
             total,
             totalMax,
+            type: "theory",
+            finalMax: 100,
+            finalMultiplier: 0.5,
             isProvisional: missing.length > 0,
             missing,
         };
     }
 
-    function finalRequirements(inCourseTotal) {
+    function finalRequirements(inCourse) {
+        const finalMultiplier = inCourse.finalMultiplier || 1;
+        const finalMax = inCourse.finalMax || 0;
+
         return gradeScale.map(grade => {
-            const requiredRaw = (grade.min - inCourseTotal) * 2;
+            const requiredRaw = (grade.min - inCourse.total) / finalMultiplier;
             if (requiredRaw <= 0) return Object.assign({}, grade, { status: "achieved", requiredRaw: 0 });
-            if (requiredRaw > 100) return Object.assign({}, grade, { status: "impossible", requiredRaw: null });
+            if (!Number.isFinite(requiredRaw) || requiredRaw > finalMax) {
+                return Object.assign({}, grade, { status: "impossible", requiredRaw: null });
+            }
             return Object.assign({}, grade, { status: "needed", requiredRaw });
         });
     }
@@ -184,7 +235,29 @@
         return `<span class="${classes.totalBadge}${limitClass}">${formatMark(value)}</span>`;
     }
 
+    function labInCourseRowsHTML(inCourse) {
+        const provisionalLabel = inCourse.isProvisional ? " <small>(provisional)</small>" : "";
+        const componentRows = inCourse.components.map(component => `
+            <tr class="${classes.generatedRow}">
+                <td align="center" valign="middle"><span class="${classes.rowIcon}">&#931;</span></td>
+                <td align="center" valign="middle"><span class="bup-ucam-extension-component-name">${escapeHTML(component.label)}</span></td>
+                <td align="center" valign="middle">${limitBadgeHTML(component.max)}</td>
+                <td align="center" valign="middle">${markBadgeHTML(component.score)}</td>
+            </tr>`).join("");
+
+        return `
+            ${componentRows}
+            <tr class="${classes.totalRow}">
+                <td align="center" valign="middle"><span class="${classes.rowIcon} ${classes.rowIconTotal}">&#8721;</span></td>
+                <td align="center" valign="middle"><span class="bup-ucam-extension-total-label">TOTAL LAB IN-COURSE MARKS${provisionalLabel}</span></td>
+                <td align="center" valign="middle">${totalBadgeHTML(inCourse.totalMax, true)}</td>
+                <td align="center" valign="middle">${totalBadgeHTML(inCourse.total)}</td>
+            </tr>`;
+    }
+
     function inCourseRowsHTML(inCourse) {
+        if (inCourse.type === "lab") return labInCourseRowsHTML(inCourse);
+
         const classTestNote = inCourse.classTests.length
             ? `Best 3 of ${inCourse.classTests.length}, scaled to /10`
             : "Best 3, scaled to /10";
@@ -222,10 +295,15 @@
     }
 
     function finalSectionHTML(inCourse, requirements) {
-        const bestCaseTotal = inCourse.total + 50;
+        const bestCaseTotal = inCourse.total + (inCourse.finalMax * inCourse.finalMultiplier);
         const worstCaseTotal = inCourse.total;
         const bestGrade = gradeForTotal(Math.min(bestCaseTotal, 100));
         const worstGrade = gradeForTotal(worstCaseTotal);
+        const inCourseLabel = inCourse.type === "lab" ? "Lab In-Course Marks" : "Total In-Course Marks";
+        const finalMaxLabel = formatMark(inCourse.finalMax);
+        const finalFootnote = inCourse.type === "lab"
+            ? `Lab final is treated as the remaining ${finalMaxLabel} marks out of 100 (Overall = Lab In-Course + Final).`
+            : "Final Exam is out of 100 and is scaled x0.5 into the overall result (Overall = In-Course /50 + Final x0.5).";
         const provisionalNote = inCourse.isProvisional
             ? `<div class="${classes.provisionalNote}">Provisional - still awaiting: ${escapeHTML(inCourse.missing.join(", "))}. Figures below will update once those are posted.</div>`
             : "";
@@ -250,8 +328,8 @@
                     <span>Final Exam Marks Needed for Each Grade</span>
                 </div>
                 <div class="${classes.summary}">
-                    <div><strong>Total In-Course Marks:</strong> ${formatMark(inCourse.total)} / ${formatMark(inCourse.totalMax)}</div>
-                    <div><strong>If you score 100 in Final:</strong> ${formatMark(bestCaseTotal)} / 100 -> <strong>${bestGrade.grade}</strong></div>
+                    <div><strong>${inCourseLabel}:</strong> ${formatMark(inCourse.total)} / ${formatMark(inCourse.totalMax)}</div>
+                    <div><strong>If you score ${finalMaxLabel} in Final:</strong> ${formatMark(bestCaseTotal)} / 100 -> <strong>${bestGrade.grade}</strong></div>
                     <div><strong>If you score 0 in Final:</strong> ${formatMark(worstCaseTotal)} / 100 -> <strong>${worstGrade.grade}</strong></div>
                 </div>
                 ${provisionalNote}
@@ -264,14 +342,14 @@
                                 <th scope="col">Marks Range</th>
                                 <th scope="col">GPA</th>
                                 <th scope="col">Description</th>
-                                <th scope="col">Required in Final (out of 100)</th>
+                                <th scope="col">Required in Final (out of ${finalMaxLabel})</th>
                             </tr>
                         </thead>
                         <tbody>${rows}</tbody>
                     </table>
                 </div>
                 <div class="${classes.footnote}">
-                    Final Exam is out of 100 and is scaled x0.5 into the overall result (Overall = In-Course /50 + Final x0.5).
+                    ${finalFootnote}
                     BUP UCAM Extension estimate - please double-check against your course teacher's official scheme.
                 </div>
             </section>`;
@@ -341,7 +419,7 @@
         const wrapper = table.closest(selectors.hostTableWrapper);
         const section = wrapper ? wrapper.closest(selectors.hostDataSection) : null;
         if (section && section.parentElement) {
-            section.insertAdjacentHTML("afterend", finalSectionHTML(inCourse, finalRequirements(inCourse.total)));
+            section.insertAdjacentHTML("afterend", finalSectionHTML(inCourse, finalRequirements(inCourse)));
         }
     }
 

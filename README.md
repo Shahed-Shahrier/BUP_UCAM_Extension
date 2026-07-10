@@ -1,12 +1,13 @@
 # BUP UCAM Extension
 
-BUP UCAM Extension is a lightweight browser extension for the UCAM portal. It adds quick controls for evaluation forms, helps students estimate in-course totals and final exam marks needed for each grade, and flags attendance present percentages.
+BUP UCAM Extension is a lightweight browser extension for the UCAM portal. It adds quick controls for evaluation forms, helps students estimate theory and lab in-course totals plus final exam marks needed for each grade, and flags attendance present percentages.
 
 ## Features
 
 - Select one evaluation rating across all visible evaluation questions.
 - Read posted exam mark summary rows from the UCAM portal.
-- Estimate in-course totals from class tests, mid term, project or assignment work, and attendance.
+- Estimate theory in-course totals from class tests, mid term, project or assignment work, and attendance.
+- Estimate lab in-course totals from quiz, viva, attendance, home assignment or report, and class performance or observation marks.
 - Add temporary manual marks for pending components.
 - Show final exam marks needed for each grade.
 - Show each course's present percentage beside the present count, highlighted red below 85% and green otherwise.
